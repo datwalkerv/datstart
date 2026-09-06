@@ -1,4 +1,5 @@
 import { Clock } from "@/components/clock/Clock";
+import { SearchBar } from "@/components/search/SearchBar";
 import { WeatherWidget } from "@/components/weather/WeatherWidget";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
         <WeatherWidget />
       </div>
       <Clock />
+      <SearchBar />
     </main>
   );
 }
