@@ -2,6 +2,7 @@ import { BackgroundLayer } from "@/components/background/BackgroundLayer";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { Clock } from "@/components/clock/Clock";
 import { Dock } from "@/components/dock/Dock";
+import { RepoLink } from "@/components/footer/RepoLink";
 import { SearchBar } from "@/components/search/SearchBar";
 import { SettingsButton } from "@/components/settings/SettingsButton";
 import { WeatherWidget } from "@/components/weather/WeatherWidget";
@@ -20,6 +21,7 @@ export default function Home() {
         <Clock />
         <SearchBar />
         <CardGrid />
+        <RepoLink />
         <Dock />
       </main>
     </>
