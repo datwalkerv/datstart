@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { RepoLink } from "@/components/footer/RepoLink";
+import { useMounted } from "@/lib/useMounted";
 import { AppearanceTab } from "./AppearanceTab";
 import { DataTab } from "./DataTab";
-import { DockTab } from "./DockTab";
 import { SearchTab } from "./SearchTab";
 
 const TABS = [
   { id: "appearance", label: "Appearance" },
   { id: "search", label: "Search" },
-  { id: "dock", label: "Dock" },
   { id: "data", label: "Data" },
 ] as const;
 
@@ -17,6 +18,7 @@ type TabId = (typeof TABS)[number]["id"];
 
 export function SettingsPanel({ onClose }: { onClose: () => void }) {
   const [tab, setTab] = useState<TabId>("appearance");
+  const mounted = useMounted();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -26,9 +28,11 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-40 flex justify-end bg-black/40"
+      className="fixed inset-0 z-50 flex justify-end bg-black/40"
       onPointerDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -79,10 +83,14 @@ export function SettingsPanel({ onClose }: { onClose: () => void }) {
         <div className="flex-1 overflow-y-auto p-5">
           {tab === "appearance" ? <AppearanceTab /> : null}
           {tab === "search" ? <SearchTab /> : null}
-          {tab === "dock" ? <DockTab /> : null}
           {tab === "data" ? <DataTab /> : null}
         </div>
+
+        <footer className="flex justify-center border-t border-white/10 p-4">
+          <RepoLink />
+        </footer>
       </aside>
-    </div>
+    </div>,
+    document.body,
   );
 }

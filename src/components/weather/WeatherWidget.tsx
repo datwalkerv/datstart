@@ -23,7 +23,7 @@ export function WeatherWidget() {
   const hydrated = useHydrated();
   const unit = useStore((s) => s.weather.unit);
   const setWeatherSettings = useStore((s) => s.setWeather);
-  const { weather, error } = useWeather();
+  const { weather, error, location, enableLocation } = useWeather();
 
   if (!hydrated) return null;
 
@@ -72,6 +72,20 @@ export function WeatherWidget() {
               {round(weather.high)}°
             </span>
           </div>
+
+          {location?.source === "fallback" ? (
+            <p className="mt-2 text-[0.68rem] leading-snug text-fg-faint">
+              Data for {location.label}.{" "}
+              <button
+                type="button"
+                onClick={() => void enableLocation()}
+                className="focus-ring font-semibold text-accent underline-offset-2 hover:underline"
+              >
+                Enable location
+              </button>{" "}
+              to see yours.
+            </p>
+          ) : null}
         </>
       ) : (
         <p className="py-3 text-xs text-fg-dim">{error ?? "Loading weather…"}</p>

@@ -12,6 +12,7 @@ export type Card = {
   pins: Pin[];
 };
 
+/** Dock apps are configured in code, in src/lib/dock.ts. */
 export type DockItem = {
   id: string;
   label: string;
@@ -70,7 +71,6 @@ export type AppState = {
   search: SearchSettings;
   background: BackgroundSettings;
   cards: Card[];
-  dock: DockItem[];
   weather: WeatherSettings;
   clock: ClockSettings;
 };

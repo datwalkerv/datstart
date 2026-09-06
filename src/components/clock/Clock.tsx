@@ -42,22 +42,20 @@ export function Clock() {
     : { time: "--:--", suffix: "" };
 
   return (
-    <div className="glass rounded-glass px-8 py-6 sm:px-12 sm:py-8 text-center">
+    <div className="text-center">
       <p
-        className="font-serif text-xl sm:text-2xl text-fg-dim"
+        className="font-serif text-xl text-white/70 sm:text-2xl [text-shadow:0_2px_18px_rgba(0,0,0,0.6)]"
         suppressHydrationWarning
       >
-        {ready ? formatDate(now) : " "}
+        {ready ? formatDate(now) : "\u00a0"}
       </p>
       <p
-        className="text-logo mt-1 text-6xl sm:text-7xl md:text-8xl tabular-nums leading-none"
+        className="glass-text text-logo mt-1 text-7xl leading-none tabular-nums sm:text-8xl md:text-9xl"
         suppressHydrationWarning
       >
         {time}
         {suffix ? (
-          <span className="ml-2 align-top text-2xl sm:text-3xl text-fg-dim">
-            {suffix}
-          </span>
+          <span className="ml-2 align-top text-3xl sm:text-4xl">{suffix}</span>
         ) : null}
       </p>
     </div>

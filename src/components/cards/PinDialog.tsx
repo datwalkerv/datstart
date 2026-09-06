@@ -25,7 +25,10 @@ export function PinDialog({ pin, onClose, onSubmit }: Props) {
 
   const submit = () => {
     const trimmedUrl = url.trim();
-    if (!trimmedUrl) return;
+    if (!trimmedUrl) {
+      onClose();
+      return;
+    }
     onSubmit({
       title: title.trim() || siteName(trimmedUrl),
       url: trimmedUrl,
@@ -35,7 +38,12 @@ export function PinDialog({ pin, onClose, onSubmit }: Props) {
   };
 
   return (
-    <Modal open title={pin ? "Edit pin" : "Add pin"} onClose={onClose}>
+    <Modal
+      open
+      title={pin ? "Edit pin" : "Add pin"}
+      onClose={onClose}
+      onBackdropClose={submit}
+    >
       <form
         className="space-y-3"
         onSubmit={(event) => {

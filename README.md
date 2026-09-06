@@ -16,8 +16,8 @@ app dock, in a dark liquid-glass UI with a neon green accent.
   YouTube or a custom `{q}` template. Typing a URL navigates straight to it.
 - **Cards** — Work and Personal to start; add your own, pin sites as favicon
   buttons, drag pins between cards.
-- **Dock** — bottom-centered app dock with placeholder tiles. Swap in your own
-  links and icons from Settings → Dock.
+- **Dock** — bottom-centered app dock with placeholder tiles, configured in
+  code (`src/lib/dock.ts`).
 - **Backgrounds** — upload an image, paste a URL, or build a gradient/solid
   color, with blur and dim controls.
 - **Your data stays local** — everything is in `localStorage` (uploaded images in
@@ -39,9 +39,7 @@ npm run lint
 
 ## Customizing the dock
 
-Dock tiles are plain `{ label, url, iconUrl }` entries. Icons can be any URL —
-an SVG, a PNG or a data URI. The bundled placeholders follow the same shape as
-this icon: a rounded neon square with a black monogram.
-
-Defaults live in `src/lib/defaults.ts`; per-user changes are made in the
-Settings panel.
+Edit `DOCK_ITEMS` in `src/lib/dock.ts`. Each tile is a plain
+`{ id, label, url, iconUrl }` entry and `iconUrl` takes any image URL — an SVG,
+a PNG or a data URI. The `monogramIcon()` helper renders the placeholder shape:
+a rounded `#39FF14` square with a black monogram.

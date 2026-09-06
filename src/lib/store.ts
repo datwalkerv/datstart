@@ -9,7 +9,6 @@ import type {
   BackgroundSettings,
   ClockSettings,
   Coords,
-  DockItem,
   Pin,
   SearchSettings,
   WeatherSettings,
@@ -36,11 +35,6 @@ type Actions = {
     pinId: string,
     toIndex: number,
   ) => void;
-  // dock
-  addDockItem: (item: Omit<DockItem, "id">) => void;
-  updateDockItem: (id: string, patch: Partial<DockItem>) => void;
-  removeDockItem: (id: string) => void;
-  reorderDock: (from: number, to: number) => void;
   // misc
   setWeather: (patch: Partial<WeatherSettings>) => void;
   setCoords: (coords: Coords) => void;
@@ -157,19 +151,6 @@ export const useStore = create<Store>()(
           };
         }),
 
-      addDockItem: (item) =>
-        set((s) => ({ dock: [...s.dock, { ...item, id: createId("dock") }] })),
-
-      updateDockItem: (id, patch) =>
-        set((s) => ({
-          dock: s.dock.map((d) => (d.id === id ? { ...d, ...patch } : d)),
-        })),
-
-      removeDockItem: (id) =>
-        set((s) => ({ dock: s.dock.filter((d) => d.id !== id) })),
-
-      reorderDock: (from, to) => set((s) => ({ dock: move(s.dock, from, to) })),
-
       setWeather: (patch) =>
         set((s) => ({ weather: { ...s.weather, ...patch } })),
 
@@ -194,7 +175,6 @@ export const useStore = create<Store>()(
         search: s.search,
         background: s.background,
         cards: s.cards,
-        dock: s.dock,
         weather: s.weather,
         clock: s.clock,
       }),
@@ -209,7 +189,6 @@ export function exportState(state: AppState): string {
       search: state.search,
       background: state.background,
       cards: state.cards,
-      dock: state.dock,
       weather: state.weather,
       clock: state.clock,
     },

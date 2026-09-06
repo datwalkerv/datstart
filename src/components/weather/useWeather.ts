@@ -15,6 +15,11 @@ export type Weather = {
   currentHour: number;
 };
 
+/** Where the coordinates came from: the device, or a coarse fallback. */
+export type LocationSource = "device" | "fallback";
+
+type Located = Coords & { source: LocationSource; label: string };
+
 type OpenMeteoResponse = {
   current: {
     time: string;
@@ -35,9 +40,10 @@ type OpenMeteoResponse = {
 };
 
 const ENDPOINT = "https://api.open-meteo.com/v1/forecast";
+const REFRESH_MS = 15 * 60 * 1000;
 
-async function resolveCoords(): Promise<Coords> {
-  const fromBrowser = await new Promise<Coords | null>((resolve) => {
+function getDevicePosition(): Promise<Coords | null> {
+  return new Promise((resolve) => {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
       resolve(null);
       return;
@@ -52,13 +58,23 @@ async function resolveCoords(): Promise<Coords> {
       { timeout: 8000, maximumAge: 30 * 60 * 1000 },
     );
   });
+}
 
-  if (fromBrowser) return fromBrowser;
+/** True when the browser has already granted geolocation, so no prompt shows. */
+async function hasGeolocationPermission(): Promise<boolean> {
+  try {
+    const status = await navigator.permissions.query({ name: "geolocation" });
+    return status.state === "granted";
+  } catch {
+    return false;
+  }
+}
 
+async function fetchFallbackLocation(): Promise<Located> {
   const response = await fetch("/api/geo");
   if (!response.ok) throw new Error("Could not resolve location");
-  const data = (await response.json()) as Coords;
-  return { latitude: data.latitude, longitude: data.longitude };
+  const data = (await response.json()) as Coords & { label: string };
+  return { ...data, source: "fallback" };
 }
 
 async function fetchWeather(coords: Coords, unit: "c" | "f"): Promise<Weather> {
@@ -80,7 +96,9 @@ async function fetchWeather(coords: Coords, unit: "c" | "f"): Promise<Weather> {
 
   const currentHour = Math.max(
     0,
-    data.hourly.time.findIndex((t) => t.slice(0, 13) === data.current.time.slice(0, 13)),
+    data.hourly.time.findIndex(
+      (t) => t.slice(0, 13) === data.current.time.slice(0, 13),
+    ),
   );
 
   return {
@@ -98,39 +116,78 @@ async function fetchWeather(coords: Coords, unit: "c" | "f"): Promise<Weather> {
   };
 }
 
-const REFRESH_MS = 15 * 60 * 1000;
-
 export function useWeather() {
   const unit = useStore((s) => s.weather.unit);
-  const cachedCoords = useStore((s) => s.weather.coords);
+  const savedCoords = useStore((s) => s.weather.coords);
   const setCoords = useStore((s) => s.setCoords);
 
+  const [located, setLocated] = useState<Located | null>(null);
   const [weather, setWeather] = useState<Weather | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    try {
-      const coords = cachedCoords ?? (await resolveCoords());
-      if (!cachedCoords) setCoords(coords);
-      setWeather(await fetchWeather(coords, unit));
-      setError(null);
-    } catch {
-      setError("Weather unavailable");
+  /**
+   * Saved coordinates only ever come from the device, so they are trusted.
+   * Otherwise geolocation is used only when already permitted — asking is left
+   * to the "Enable location" button so the page never prompts on load.
+   */
+  const resolveLocation = useCallback(async (): Promise<Located> => {
+    if (savedCoords) return { ...savedCoords, source: "device", label: "" };
+    if (await hasGeolocationPermission()) {
+      const coords = await getDevicePosition();
+      if (coords) {
+        setCoords(coords);
+        return { ...coords, source: "device", label: "" };
+      }
     }
-  }, [cachedCoords, setCoords, unit]);
+    return fetchFallbackLocation();
+  }, [savedCoords, setCoords]);
+
+  // Resolve the location once, then keep the forecast fresh for it.
+  useEffect(() => {
+    if (located) return;
+    let cancelled = false;
+    void resolveLocation()
+      .then((location) => {
+        if (!cancelled) setLocated(location);
+      })
+      .catch(() => {
+        if (!cancelled) setError("Weather unavailable");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [located, resolveLocation]);
 
   useEffect(() => {
+    if (!located) return;
     let cancelled = false;
-    const run = () => {
-      if (!cancelled) void load();
-    };
-    run();
-    const interval = window.setInterval(run, REFRESH_MS);
+
+    const run = () =>
+      fetchWeather(located, unit)
+        .then((next) => {
+          if (cancelled) return;
+          setWeather(next);
+          setError(null);
+        })
+        .catch(() => {
+          if (!cancelled) setError("Weather unavailable");
+        });
+
+    void run();
+    const interval = window.setInterval(() => void run(), REFRESH_MS);
     return () => {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [load]);
+  }, [located, unit]);
 
-  return { weather, error };
+  /** Prompts for geolocation and switches to the device's own coordinates. */
+  const enableLocation = useCallback(async () => {
+    const coords = await getDevicePosition();
+    if (!coords) return;
+    setCoords(coords);
+    setLocated({ ...coords, source: "device", label: "" });
+  }, [setCoords]);
+
+  return { weather, error, location: located, enableLocation };
 }

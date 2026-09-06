@@ -33,7 +33,7 @@ export function SettingsButton() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open settings"
-        className="focus-ring glass glass-hover grid size-9 place-items-center rounded-full text-fg-dim hover:text-accent"
+        className="focus-ring glass glass-hover fixed bottom-5 right-5 z-30 grid size-11 place-items-center rounded-full text-fg-dim hover:rotate-45 hover:text-accent sm:bottom-6 sm:right-6"
       >
         <GearIcon />
       </button>
