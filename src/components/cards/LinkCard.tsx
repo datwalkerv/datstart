@@ -1,10 +1,27 @@
 "use client";
 
 import { useState } from "react";
+import { SortableContext, rectSortingStrategy, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { useStore } from "@/lib/store";
 import type { Card, Pin } from "@/lib/types";
-import { PinButton } from "./PinButton";
 import { PinDialog } from "./PinDialog";
+import { SortablePin } from "./SortablePin";
+
+function GripIcon() {
+  return (
+    <svg viewBox="0 0 16 16" className="size-3.5" aria-hidden="true">
+      <g fill="currentColor">
+        <circle cx="6" cy="3.5" r="1.3" />
+        <circle cx="10" cy="3.5" r="1.3" />
+        <circle cx="6" cy="8" r="1.3" />
+        <circle cx="10" cy="8" r="1.3" />
+        <circle cx="6" cy="12.5" r="1.3" />
+        <circle cx="10" cy="12.5" r="1.3" />
+      </g>
+    </svg>
+  );
+}
 
 function PencilIcon() {
   return (
@@ -29,6 +46,14 @@ export function LinkCard({ card }: { card: Card }) {
   const [editing, setEditing] = useState(false);
   const [dialogPin, setDialogPin] = useState<Pin | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card.id, data: { type: "card" } });
 
   const openAdd = () => {
     setDialogPin(null);
@@ -41,8 +66,22 @@ export function LinkCard({ card }: { card: Card }) {
   };
 
   return (
-    <section className="glass rounded-glass p-4 sm:p-5">
+    <section
+      ref={setNodeRef}
+      style={{ transform: CSS.Translate.toString(transform), transition }}
+      className={`glass rounded-glass p-4 sm:p-5 ${isDragging ? "opacity-60" : ""}`}
+    >
       <header className="mb-4 flex items-center gap-2">
+        <button
+          type="button"
+          aria-label={`Reorder ${card.title}`}
+          className="focus-ring -ml-1 cursor-grab touch-none rounded-lg p-1 text-fg-faint transition hover:text-fg active:cursor-grabbing"
+          {...attributes}
+          {...listeners}
+        >
+          <GripIcon />
+        </button>
+
         {editing ? (
           <input
             value={card.title}
@@ -80,15 +119,21 @@ export function LinkCard({ card }: { card: Card }) {
       </header>
 
       <div className="flex flex-wrap gap-3">
-        {card.pins.map((pin) => (
-          <PinButton
-            key={pin.id}
-            pin={pin}
-            editing={editing}
-            onEdit={() => openEdit(pin)}
-            onRemove={() => removePin(card.id, pin.id)}
-          />
-        ))}
+        <SortableContext
+          items={card.pins.map((pin) => pin.id)}
+          strategy={rectSortingStrategy}
+        >
+          {card.pins.map((pin) => (
+            <SortablePin
+              key={pin.id}
+              pin={pin}
+              cardId={card.id}
+              editing={editing}
+              onEdit={() => openEdit(pin)}
+              onRemove={() => removePin(card.id, pin.id)}
+            />
+          ))}
+        </SortableContext>
 
         <button
           type="button"
