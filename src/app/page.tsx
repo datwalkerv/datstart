@@ -11,16 +11,34 @@ export default function Home() {
   return (
     <>
       <BackgroundLayer />
-      <main className="relative flex min-h-dvh flex-col items-center justify-center gap-8 px-4 pb-32 pt-20">
+
+      <main className="relative flex min-h-dvh flex-col items-center justify-center gap-6 px-4 pb-32 pt-24 sm:gap-8">
         <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
           <SettingsButton />
         </div>
-        <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+
+        <div className="absolute right-3 top-3 origin-top-right scale-90 sm:right-6 sm:top-6 sm:scale-100">
           <WeatherWidget />
         </div>
-        <Clock />
-        <SearchBar />
-        <CardGrid />
+
+        <div className="animate-rise">
+          <Clock />
+        </div>
+
+        <div
+          className="animate-rise flex w-full justify-center"
+          style={{ animationDelay: "60ms" }}
+        >
+          <SearchBar />
+        </div>
+
+        <div
+          className="animate-rise flex w-full justify-center"
+          style={{ animationDelay: "120ms" }}
+        >
+          <CardGrid />
+        </div>
+
         <RepoLink />
         <Dock />
       </main>

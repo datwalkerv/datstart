@@ -17,6 +17,7 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "datstart",
   description: "A personal start page.",
+  icons: { icon: "/favicon.svg" },
 };
 
 export const viewport: Viewport = {
