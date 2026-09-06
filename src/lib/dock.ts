@@ -1,11 +1,15 @@
 import type { DockItem } from "./types";
 
 /**
- * Dock apps. Edit this list to add your own — `iconUrl` takes any image URL
- * (SVG, PNG or a data URI).
+ * The dock. Edit `DOCK_ITEMS` below to add your apps:
  *
- * The placeholders use `monogramIcon`, which renders the datmotions favicon
- * shape: a rounded #39FF14 square with a black monogram.
+ *   url      where the tile links to — an absolute URL for another site, or a
+ *            path like "/notes" for a route inside this app
+ *   iconUrl  the tile's image — an SVG or PNG URL, or a data URI
+ *   label    the tooltip text
+ *
+ * `monogramIcon` renders the placeholder shape: the datmotions favicon, a
+ * rounded #39FF14 square with a black monogram.
  */
 export function monogramIcon(text: string): string {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><rect width="32" height="32" rx="8" fill="#39FF14"/><text x="16" y="16.5" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="bold" font-size="14" fill="black">${text}</text></svg>`;
@@ -16,7 +20,7 @@ export const DOCK_ITEMS: DockItem[] = [
   {
     id: "datmotions",
     label: "datmotions",
-    url: "",
+    url: "https://datmotions.vercel.app/",
     iconUrl:
       "https://raw.githubusercontent.com/datwalkerv/datmotions/refs/heads/main/apps/web/public/favicon.svg",
   },

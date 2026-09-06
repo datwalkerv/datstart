@@ -15,7 +15,7 @@ app dock, in a dark liquid-glass UI with a neon green accent.
 - **Search** — Google by default, plus DuckDuckGo, Bing, Brave, Perplexity,
   YouTube or a custom `{q}` template. Typing a URL navigates straight to it.
 - **Cards** — Work and Personal to start; add your own, pin sites as favicon
-  buttons, drag pins between cards.
+  buttons (names optional), drag pins between cards.
 - **Dock** — bottom-centered app dock with placeholder tiles, configured in
   code (`src/lib/dock.ts`).
 - **Backgrounds** — upload an image, paste a URL, or build a gradient/solid
@@ -39,7 +39,17 @@ npm run lint
 
 ## Customizing the dock
 
-Edit `DOCK_ITEMS` in `src/lib/dock.ts`. Each tile is a plain
-`{ id, label, url, iconUrl }` entry and `iconUrl` takes any image URL — an SVG,
-a PNG or a data URI. The `monogramIcon()` helper renders the placeholder shape:
-a rounded `#39FF14` square with a black monogram.
+Edit `DOCK_ITEMS` in `src/lib/dock.ts`:
+
+```ts
+{
+  id: "datmotions",
+  label: "datmotions",        // tooltip
+  url: "https://…",           // or "/notes" for a route in this app
+  iconUrl: "https://…/favicon.svg",  // SVG, PNG or a data URI
+}
+```
+
+Absolute URLs render as `<a>`, paths starting with `/` render as a
+`next/link`. The `monogramIcon()` helper draws the placeholder shape: a rounded
+`#39FF14` square with a black monogram.

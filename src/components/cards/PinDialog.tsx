@@ -7,7 +7,6 @@ import {
   ghostButtonClass,
   primaryButtonClass,
 } from "@/components/ui/controls";
-import { siteName } from "@/lib/favicon";
 import type { Pin } from "@/lib/types";
 
 type Props = {
@@ -30,7 +29,7 @@ export function PinDialog({ pin, onClose, onSubmit }: Props) {
       return;
     }
     onSubmit({
-      title: title.trim() || siteName(trimmedUrl),
+      title: title.trim(),
       url: trimmedUrl,
       iconUrl: iconUrl.trim() || undefined,
     });
@@ -59,6 +58,7 @@ export function PinDialog({ pin, onClose, onSubmit }: Props) {
         />
         <TextField
           label="Name"
+          hint="Shown under the icon. Leave empty for icon only."
           placeholder="Optional"
           value={title}
           onChange={(event) => setTitle(event.target.value)}

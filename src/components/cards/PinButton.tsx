@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { faviconUrl, normalizeUrl } from "@/lib/favicon";
+import { faviconUrl, normalizeUrl, siteName } from "@/lib/favicon";
 import type { Pin } from "@/lib/types";
 
 type Props = {
@@ -15,12 +15,15 @@ export function PinButton({ pin, editing, onEdit, onRemove }: Props) {
   const [failed, setFailed] = useState(false);
   const icon = pin.iconUrl || faviconUrl(pin.url);
   const showIcon = Boolean(icon) && !failed;
+  // The name is optional: when unset, the pin is just its icon.
+  const label = pin.title.trim();
+  const fallbackName = label || siteName(pin.url);
 
   return (
     <div className="group relative flex w-16 flex-col items-center gap-1.5">
       <a
         href={normalizeUrl(pin.url)}
-        title={pin.title}
+        title={fallbackName}
         onClick={(event) => {
           if (editing) {
             event.preventDefault();
@@ -41,20 +44,22 @@ export function PinButton({ pin, editing, onEdit, onRemove }: Props) {
           />
         ) : (
           <span className="text-logo text-lg text-accent">
-            {pin.title.slice(0, 1).toUpperCase() || "?"}
+            {fallbackName.slice(0, 1).toUpperCase() || "?"}
           </span>
         )}
       </a>
 
-      <span className="line-clamp-1 w-full text-center text-[0.7rem] text-fg-dim">
-        {pin.title}
-      </span>
+      {label ? (
+        <span className="line-clamp-1 w-full text-center text-[0.7rem] text-fg-dim">
+          {label}
+        </span>
+      ) : null}
 
       {editing ? (
         <button
           type="button"
           onClick={onRemove}
-          aria-label={`Remove ${pin.title}`}
+          aria-label={`Remove ${fallbackName}`}
           className="focus-ring absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-black text-fg-dim ring-1 ring-white/20 transition hover:text-accent"
         >
           <svg viewBox="0 0 10 10" className="size-2.5" aria-hidden="true">

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { SortableContext, rectSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useStore } from "@/lib/store";
+import { useClickOutside } from "@/lib/useClickOutside";
 import type { Card, Pin } from "@/lib/types";
 import { PinDialog } from "./PinDialog";
 import { SortablePin } from "./SortablePin";
@@ -55,6 +56,20 @@ export function LinkCard({ card }: { card: Card }) {
     isDragging,
   } = useSortable({ id: card.id, data: { type: "card" } });
 
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const setRefs = useCallback(
+    (node: HTMLElement | null) => {
+      sectionRef.current = node;
+      setNodeRef(node);
+    },
+    [setNodeRef],
+  );
+
+  // Clicking anywhere outside the card leaves edit mode; the pin dialog is
+  // portalled out of the card, so keep editing while it is open.
+  const stopEditing = useCallback(() => setEditing(false), []);
+  useClickOutside(sectionRef, editing && !dialogOpen, stopEditing);
+
   const openAdd = () => {
     setDialogPin(null);
     setDialogOpen(true);
@@ -67,7 +82,7 @@ export function LinkCard({ card }: { card: Card }) {
 
   return (
     <section
-      ref={setNodeRef}
+      ref={setRefs}
       style={{ transform: CSS.Translate.toString(transform), transition }}
       className={`glass rounded-glass p-4 sm:p-5 ${isDragging ? "opacity-60" : ""}`}
     >

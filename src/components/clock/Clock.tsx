@@ -31,6 +31,18 @@ function formatTime(
   return { time, suffix: "" };
 }
 
+/** One pass of the numerals; three of these stack to make the glass. */
+function Layer({ className, time }: { className: string; time: string }) {
+  return (
+    <span
+      className={`clock-layer ${className} text-[clamp(4.5rem,17vw,10rem)]`}
+      suppressHydrationWarning
+    >
+      {time}
+    </span>
+  );
+}
+
 export function Clock() {
   const hydrated = useHydrated();
   const { format24, showSeconds } = useStore((s) => s.clock);
@@ -44,20 +56,21 @@ export function Clock() {
   return (
     <div className="text-center">
       <p
-        className="font-serif text-xl text-white/70 sm:text-2xl [text-shadow:0_2px_18px_rgba(0,0,0,0.6)]"
+        className="text-[clamp(1.05rem,3.4vw,1.6rem)] font-semibold tracking-tight text-white/90 [text-shadow:0_2px_16px_rgba(0,0,0,0.45)]"
         suppressHydrationWarning
       >
-        {ready ? formatDate(now) : "\u00a0"}
+        {ready ? formatDate(now) : " "}
       </p>
-      <p
-        className="glass-text text-logo mt-1 text-7xl leading-none tabular-nums sm:text-8xl md:text-9xl"
-        suppressHydrationWarning
-      >
-        {time}
-        {suffix ? (
-          <span className="ml-2 align-top text-3xl sm:text-4xl">{suffix}</span>
-        ) : null}
-      </p>
+
+      <div className="clock-stack mt-1">
+        <Layer className="clock-fill" time={time} />
+        <Layer className="clock-gloss" time={time} />
+        <Layer className="clock-rim" time={time} />
+      </div>
+
+      {suffix ? (
+        <p className="-mt-1 text-lg font-semibold text-white/70">{suffix}</p>
+      ) : null}
     </div>
   );
 }

@@ -28,7 +28,7 @@ export function WeatherWidget() {
   if (!hydrated) return null;
 
   return (
-    <div className="glass rounded-3xl px-4 py-3 min-w-[13.5rem] text-left">
+    <div className="glass rounded-3xl px-4 py-3 min-w-54 text-left">
       {weather ? (
         <>
           <div className="flex items-start justify-between gap-4">
