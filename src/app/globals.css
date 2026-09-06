@@ -84,7 +84,7 @@ body {
 
   .clock-layer {
     display: block;
-    font-weight: 600;
+    font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 0.95;
     font-variant-numeric: tabular-nums;
@@ -98,7 +98,7 @@ body {
 
   .clock-fill {
     color: transparent;
-    background-color: rgba(255, 255, 255, 0.24);
+    background-color: rgba(255, 255, 255, 0.1);
     -webkit-background-clip: text;
     background-clip: text;
     backdrop-filter: blur(10px) brightness(1.18) saturate(1.35);
@@ -110,10 +110,10 @@ body {
     color: transparent;
     background-image: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.62) 0%,
-      rgba(255, 255, 255, 0.1) 42%,
-      rgba(255, 255, 255, 0.05) 62%,
-      rgba(255, 255, 255, 0.42) 100%
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.06) 42%,
+      rgba(255, 255, 255, 0.03) 62%,
+      rgba(255, 255, 255, 0.22) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -121,8 +121,8 @@ body {
 
   .clock-rim {
     color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.7);
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35))
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.42);
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.2))
       drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.25));
   }
 
