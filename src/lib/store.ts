@@ -51,6 +51,16 @@ type Actions = {
 
 export type Store = AppState & Actions;
 
+/** localStorage is unavailable during SSR; persist falls back to this. */
+const noopStorage: Storage = {
+  length: 0,
+  clear: () => {},
+  getItem: () => null,
+  key: () => null,
+  removeItem: () => {},
+  setItem: () => {},
+};
+
 function move<T>(list: T[], from: number, to: number): T[] {
   if (from === to || from < 0 || to < 0 || from >= list.length) return list;
   const next = list.slice();
@@ -176,7 +186,9 @@ export const useStore = create<Store>()(
     {
       name: STORAGE_KEY,
       version: STATE_VERSION,
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() =>
+        typeof window === "undefined" ? noopStorage : window.localStorage,
+      ),
       partialize: (s): AppState => ({
         version: s.version,
         search: s.search,

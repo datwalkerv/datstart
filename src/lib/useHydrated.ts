@@ -8,16 +8,17 @@ import { useStore } from "./store";
  * Render neutral placeholders until then to keep SSR markup stable.
  */
 export function useHydrated(): boolean {
-  const [hydrated, setHydrated] = useState(() =>
-    useStore.persist.hasHydrated(),
-  );
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const unsubFinish = useStore.persist.onFinishHydration(() =>
-      setHydrated(true),
-    );
-    if (useStore.persist.hasHydrated()) setHydrated(true);
-    return unsubFinish;
+    const persist = useStore.persist;
+    if (!persist) {
+      setHydrated(true);
+      return;
+    }
+    const unsubscribe = persist.onFinishHydration(() => setHydrated(true));
+    if (persist.hasHydrated()) setHydrated(true);
+    return unsubscribe;
   }, []);
 
   return hydrated;
