@@ -1,3 +1,4 @@
+import { CardGrid } from "@/components/cards/CardGrid";
 import { Clock } from "@/components/clock/Clock";
 import { SearchBar } from "@/components/search/SearchBar";
 import { WeatherWidget } from "@/components/weather/WeatherWidget";
@@ -10,6 +11,7 @@ export default function Home() {
       </div>
       <Clock />
       <SearchBar />
+      <CardGrid />
     </main>
   );
 }
