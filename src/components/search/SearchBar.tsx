@@ -58,7 +58,7 @@ export function SearchBar() {
     <form
       onSubmit={onSubmit}
       role="search"
-      className="glass glass-hover focus-within:accent-glow flex w-full max-w-2xl items-center gap-2 rounded-full py-2 pl-2 pr-4 transition"
+      className="glass glass-hover flex w-full max-w-2xl items-center gap-2 rounded-full py-2 pl-2 pr-4 transition focus-within:ring-1 focus-within:ring-white/20"
     >
       <div className="relative" ref={menuRef}>
         <button
@@ -116,7 +116,7 @@ export function SearchBar() {
         aria-label="Search query"
         autoComplete="off"
         spellCheck={false}
-        className="focus-ring min-w-0 flex-1 bg-transparent py-1.5 text-base text-fg placeholder:text-fg-faint"
+        className="min-w-0 flex-1 bg-transparent py-1.5 text-base text-fg outline-none placeholder:text-fg-faint"
       />
 
       <button
