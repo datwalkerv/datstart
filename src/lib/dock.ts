@@ -12,21 +12,19 @@ import type { DockItem } from "./types";
  * rounded #39FF14 square with a black monogram.
  */
 export function monogramIcon(text: string): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><rect width="32" height="32" rx="8" fill="#39FF14"/><text x="16" y="16.5" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="bold" font-size="14" fill="black">${text}</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><rect width="100" height="100" rx="22" fill="#39FF14"/><text x="50" y="67" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-weight="900" font-size="38" letter-spacing="-2" fill="#080808">${text}</text></svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 export const DOCK_ITEMS: DockItem[] = [
   {
-    id: "datmotions",
-    label: "datmotions",
-    url: "https://datmotions.vercel.app/",
+    id: "datclean",
+    label: "datclean",
+    url: "https://datclean.vercel.app/",
     iconUrl:
-      "https://raw.githubusercontent.com/datwalkerv/datmotions/refs/heads/main/apps/web/public/favicon.svg",
+      monogramIcon("dc"),
   },
-  { id: "app-2", label: "App 2", url: "", iconUrl: monogramIcon("a2") },
-  { id: "app-3", label: "App 3", url: "", iconUrl: monogramIcon("a3") },
-  { id: "app-4", label: "App 4", url: "", iconUrl: monogramIcon("a4") },
-  { id: "app-5", label: "App 5", url: "", iconUrl: monogramIcon("a5") },
-  { id: "app-6", label: "App 6", url: "", iconUrl: monogramIcon("a6") },
+  { id: "datmotions", label: "datmotions", url: "https://datmotions.vercel.app/", iconUrl: monogramIcon("dm") },
+  { id: "datnotes", label: "datnotes", url: "https://datnotes.vercel.app/", iconUrl: monogramIcon("dn") },
+  { id: "datsounds", label: "datsounds", url: "https://datsounds.vercel.app/", iconUrl: monogramIcon("ds") },
 ];
