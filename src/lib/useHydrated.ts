@@ -1,25 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useStore } from "./store";
+
+function subscribe(onChange: () => void): () => void {
+  return useStore.persist?.onFinishHydration(onChange) ?? (() => {});
+}
+
+const getSnapshot = () => useStore.persist?.hasHydrated() ?? true;
+const getServerSnapshot = () => false;
 
 /**
  * True once the persisted store has been rehydrated from localStorage.
  * Render neutral placeholders until then to keep SSR markup stable.
  */
 export function useHydrated(): boolean {
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    const persist = useStore.persist;
-    if (!persist) {
-      setHydrated(true);
-      return;
-    }
-    const unsubscribe = persist.onFinishHydration(() => setHydrated(true));
-    if (persist.hasHydrated()) setHydrated(true);
-    return unsubscribe;
-  }, []);
-
-  return hydrated;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

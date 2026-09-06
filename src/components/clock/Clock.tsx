@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/useHydrated";
+import { useNow } from "@/lib/useNow";
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString(undefined, {
@@ -34,25 +34,7 @@ function formatTime(
 export function Clock() {
   const hydrated = useHydrated();
   const { format24, showSeconds } = useStore((s) => s.clock);
-  const [now, setNow] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setNow(new Date());
-    const tick = () => setNow(new Date());
-    let interval = 0;
-    // Align to the next second so the display never visibly skips.
-    const timeout = window.setTimeout(
-      () => {
-        tick();
-        interval = window.setInterval(tick, 1000);
-      },
-      1000 - (Date.now() % 1000),
-    );
-    return () => {
-      window.clearTimeout(timeout);
-      window.clearInterval(interval);
-    };
-  }, []);
+  const now = useNow();
 
   const ready = hydrated && now !== null;
   const { time, suffix } = ready
