@@ -71,6 +71,11 @@ export type SavingsSettings = {
   apiUrl: string;
 };
 
+export type CryptoSettings = {
+  /** Endpoint returning SOL price, portfolio value and PnL. Hidden when empty. */
+  apiUrl: string;
+};
+
 export type AppState = {
   version: number;
   search: SearchSettings;
@@ -79,4 +84,5 @@ export type AppState = {
   weather: WeatherSettings;
   clock: ClockSettings;
   savings: SavingsSettings;
+  crypto: CryptoSettings;
 };

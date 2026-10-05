@@ -10,18 +10,29 @@ import {
 import type { AppState } from "@/lib/types";
 
 /** Saved on blur or Enter so the widget doesn't fetch on every keystroke. */
-function SavingsApiField({ apiUrl }: { apiUrl: string }) {
-  const setSavings = useStore((s) => s.setSavings);
+function ApiUrlField({
+  label,
+  hint,
+  placeholder,
+  apiUrl,
+  onCommit,
+}: {
+  label: string;
+  hint: string;
+  placeholder: string;
+  apiUrl: string;
+  onCommit: (apiUrl: string) => void;
+}) {
   const [draft, setDraft] = useState(apiUrl);
-  const commit = () => setSavings({ apiUrl: draft.trim() });
+  const commit = () => onCommit(draft.trim());
 
   return (
     <TextField
-      label="Savings API"
-      hint="Returns { label: percent } pairs. Leave empty to hide the widget."
+      label={label}
+      hint={hint}
       type="url"
       inputMode="url"
-      placeholder="https://example.com/api/savings"
+      placeholder={placeholder}
       value={draft}
       onChange={(event) => setDraft(event.target.value)}
       onBlur={commit}
@@ -34,6 +45,9 @@ function SavingsApiField({ apiUrl }: { apiUrl: string }) {
 
 export function DataTab() {
   const savingsApiUrl = useStore((s) => s.savings.apiUrl);
+  const setSavings = useStore((s) => s.setSavings);
+  const cryptoApiUrl = useStore((s) => s.crypto.apiUrl);
+  const setCrypto = useStore((s) => s.setCrypto);
   const importState = useStore((s) => s.importState);
   const resetState = useStore((s) => s.resetState);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -94,9 +108,24 @@ export function DataTab() {
 
       {message ? <p className="text-xs text-accent">{message}</p> : null}
 
-      <div className="border-t border-white/10 pt-4">
-        {/* Keyed so an import or reset replaces the unsaved draft. */}
-        <SavingsApiField key={savingsApiUrl} apiUrl={savingsApiUrl} />
+      {/* Keyed so an import or reset replaces the unsaved drafts. */}
+      <div className="space-y-4 border-t border-white/10 pt-4">
+        <ApiUrlField
+          key={`savings:${savingsApiUrl}`}
+          label="Savings API"
+          hint="Returns { label: percent } pairs. Leave empty to hide the widget."
+          placeholder="https://example.com/api/savings"
+          apiUrl={savingsApiUrl}
+          onCommit={(apiUrl) => setSavings({ apiUrl })}
+        />
+        <ApiUrlField
+          key={`crypto:${cryptoApiUrl}`}
+          label="Crypto API"
+          hint="Returns SOL price, portfolio value and PnL %. Leave empty to hide the widget."
+          placeholder="https://example.com/api/crypto/summary"
+          apiUrl={cryptoApiUrl}
+          onCommit={(apiUrl) => setCrypto({ apiUrl })}
+        />
       </div>
 
       <div className="border-t border-white/10 pt-4">

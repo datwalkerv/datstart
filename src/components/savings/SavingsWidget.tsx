@@ -1,20 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useHydrated } from "@/lib/useHydrated";
+import { usePolledJson } from "@/lib/usePolledJson";
 
 type Savings = Array<[label: string, percent: number]>;
-
-const REFRESH_MS = 15 * 60 * 1000;
 
 const LABELS: Record<string, string> = { "10k": "10k", goal: "Goal" };
 
 /** Reads `{ label: percent }` pairs, or null when the response is unusable. */
-async function fetchSavings(url: string): Promise<Savings | null> {
-  const response = await fetch(url);
-  if (!response.ok) return null;
-  const data = (await response.json()) as unknown;
+function parseSavings(data: unknown): Savings | null {
   if (!data || typeof data !== "object") return null;
   const entries = Object.entries(data).filter(
     (entry): entry is [string, number] =>
@@ -27,36 +22,13 @@ async function fetchSavings(url: string): Promise<Savings | null> {
 export function SavingsWidget() {
   const hydrated = useHydrated();
   const apiUrl = useStore((s) => s.savings.apiUrl.trim());
-  const [result, setResult] = useState<{ url: string; data: Savings } | null>(
-    null,
-  );
+  const savings = usePolledJson(apiUrl, parseSavings);
 
-  useEffect(() => {
-    if (!apiUrl) return;
-    let cancelled = false;
-
-    const run = () =>
-      fetchSavings(apiUrl)
-        .catch(() => null)
-        .then((data) => {
-          if (cancelled) return;
-          setResult(data ? { url: apiUrl, data } : null);
-        });
-
-    void run();
-    const interval = window.setInterval(() => void run(), REFRESH_MS);
-    return () => {
-      cancelled = true;
-      window.clearInterval(interval);
-    };
-  }, [apiUrl]);
-
-  // Results from a previous URL are ignored until the new one responds.
-  if (!hydrated || !apiUrl || result?.url !== apiUrl) return null;
+  if (!hydrated || !savings) return null;
 
   return (
-    <div className="glass flex gap-3 self-end rounded-3xl px-3.5 py-4">
-      {result.data.map(([key, value]) => {
+    <div className="glass flex gap-3 rounded-3xl px-3.5 py-4">
+      {savings.map(([key, value]) => {
         const percent = Math.min(100, Math.max(0, value));
         return (
           <div key={key} className="flex flex-col items-center gap-2">

@@ -9,6 +9,7 @@ import type {
   BackgroundSettings,
   ClockSettings,
   Coords,
+  CryptoSettings,
   Pin,
   SavingsSettings,
   SearchSettings,
@@ -41,6 +42,7 @@ type Actions = {
   setCoords: (coords: Coords) => void;
   setClock: (patch: Partial<ClockSettings>) => void;
   setSavings: (patch: Partial<SavingsSettings>) => void;
+  setCrypto: (patch: Partial<CryptoSettings>) => void;
   importState: (state: AppState) => void;
   resetState: () => void;
 };
@@ -164,6 +166,9 @@ export const useStore = create<Store>()(
       setSavings: (patch) =>
         set((s) => ({ savings: { ...s.savings, ...patch } })),
 
+      setCrypto: (patch) =>
+        set((s) => ({ crypto: { ...s.crypto, ...patch } })),
+
       importState: (state) =>
         set(() => ({ ...createDefaultState(), ...state, version: STATE_VERSION })),
 
@@ -183,6 +188,7 @@ export const useStore = create<Store>()(
         weather: s.weather,
         clock: s.clock,
         savings: s.savings,
+        crypto: s.crypto,
       }),
     },
   ),
@@ -198,6 +204,7 @@ export function exportState(state: AppState): string {
       weather: state.weather,
       clock: state.clock,
       savings: state.savings,
+      crypto: state.crypto,
     },
     null,
     2,
