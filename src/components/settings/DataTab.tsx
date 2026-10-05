@@ -2,10 +2,38 @@
 
 import { useRef, useState } from "react";
 import { exportState, useStore } from "@/lib/store";
-import { ghostButtonClass, primaryButtonClass } from "@/components/ui/controls";
+import {
+  TextField,
+  ghostButtonClass,
+  primaryButtonClass,
+} from "@/components/ui/controls";
 import type { AppState } from "@/lib/types";
 
+/** Saved on blur or Enter so the widget doesn't fetch on every keystroke. */
+function SavingsApiField({ apiUrl }: { apiUrl: string }) {
+  const setSavings = useStore((s) => s.setSavings);
+  const [draft, setDraft] = useState(apiUrl);
+  const commit = () => setSavings({ apiUrl: draft.trim() });
+
+  return (
+    <TextField
+      label="Savings API"
+      hint="Returns { label: percent } pairs. Leave empty to hide the widget."
+      type="url"
+      inputMode="url"
+      placeholder="https://example.com/api/savings"
+      value={draft}
+      onChange={(event) => setDraft(event.target.value)}
+      onBlur={commit}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") commit();
+      }}
+    />
+  );
+}
+
 export function DataTab() {
+  const savingsApiUrl = useStore((s) => s.savings.apiUrl);
   const importState = useStore((s) => s.importState);
   const resetState = useStore((s) => s.resetState);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -65,6 +93,11 @@ export function DataTab() {
       </div>
 
       {message ? <p className="text-xs text-accent">{message}</p> : null}
+
+      <div className="border-t border-white/10 pt-4">
+        {/* Keyed so an import or reset replaces the unsaved draft. */}
+        <SavingsApiField key={savingsApiUrl} apiUrl={savingsApiUrl} />
+      </div>
 
       <div className="border-t border-white/10 pt-4">
         <button

@@ -10,6 +10,7 @@ import type {
   ClockSettings,
   Coords,
   Pin,
+  SavingsSettings,
   SearchSettings,
   WeatherSettings,
 } from "./types";
@@ -39,6 +40,7 @@ type Actions = {
   setWeather: (patch: Partial<WeatherSettings>) => void;
   setCoords: (coords: Coords) => void;
   setClock: (patch: Partial<ClockSettings>) => void;
+  setSavings: (patch: Partial<SavingsSettings>) => void;
   importState: (state: AppState) => void;
   resetState: () => void;
 };
@@ -159,6 +161,9 @@ export const useStore = create<Store>()(
 
       setClock: (patch) => set((s) => ({ clock: { ...s.clock, ...patch } })),
 
+      setSavings: (patch) =>
+        set((s) => ({ savings: { ...s.savings, ...patch } })),
+
       importState: (state) =>
         set(() => ({ ...createDefaultState(), ...state, version: STATE_VERSION })),
 
@@ -177,6 +182,7 @@ export const useStore = create<Store>()(
         cards: s.cards,
         weather: s.weather,
         clock: s.clock,
+        savings: s.savings,
       }),
     },
   ),
@@ -191,6 +197,7 @@ export function exportState(state: AppState): string {
       cards: state.cards,
       weather: state.weather,
       clock: state.clock,
+      savings: state.savings,
     },
     null,
     2,

@@ -29,5 +29,6 @@ export function createDefaultState(): AppState {
     ],
     weather: { unit: "c", coords: null },
     clock: { format24: true, showSeconds: false },
+    savings: { apiUrl: "" },
   };
 }

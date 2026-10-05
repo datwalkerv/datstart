@@ -66,6 +66,11 @@ export type ClockSettings = {
   showSeconds: boolean;
 };
 
+export type SavingsSettings = {
+  /** Endpoint returning `{ label: percent }`. The widget is hidden when empty. */
+  apiUrl: string;
+};
+
 export type AppState = {
   version: number;
   search: SearchSettings;
@@ -73,4 +78,5 @@ export type AppState = {
   cards: Card[];
   weather: WeatherSettings;
   clock: ClockSettings;
+  savings: SavingsSettings;
 };
