@@ -55,27 +55,25 @@ export function SavingsWidget() {
   if (!hydrated || !apiUrl || result?.url !== apiUrl) return null;
 
   return (
-    <div className="glass flex min-w-54 flex-col gap-2.5 rounded-3xl px-4 py-3 text-left">
+    <div className="glass flex gap-5 self-end rounded-3xl px-5 py-4">
       {result.data.map(([key, value]) => {
         const percent = Math.min(100, Math.max(0, value));
-        const label = LABELS[key] ?? key;
         return (
-          <div key={key}>
-            <div className="flex items-baseline justify-between text-xs font-semibold">
-              <span className="text-fg-dim">{label}</span>
-              <span className="tabular-nums text-fg">{value.toFixed(1)}%</span>
-            </div>
+          <div key={key} className="flex flex-col items-center gap-2">
+            <span className="text-xs font-semibold tabular-nums text-fg">
+              {value.toFixed(1)}%
+            </span>
             <div
               role="progressbar"
-              aria-label={label}
+              aria-label={LABELS[key] ?? key}
               aria-valuemin={0}
               aria-valuemax={100}
               aria-valuenow={percent}
-              className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/10"
+              className="flex h-20 w-2.5 items-end overflow-hidden rounded-full bg-white/10"
             >
               <div
-                className="h-full rounded-full bg-accent"
-                style={{ width: `${percent}%` }}
+                className="w-full rounded-full bg-accent"
+                style={{ height: `${percent}%` }}
               />
             </div>
           </div>
