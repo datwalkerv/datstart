@@ -55,13 +55,13 @@ export function SavingsWidget() {
   if (!hydrated || !apiUrl || result?.url !== apiUrl) return null;
 
   return (
-    <div className="glass flex gap-5 self-end rounded-3xl px-5 py-4">
+    <div className="glass flex gap-3 self-end rounded-3xl px-3.5 py-4">
       {result.data.map(([key, value]) => {
         const percent = Math.min(100, Math.max(0, value));
         return (
           <div key={key} className="flex flex-col items-center gap-2">
             <span className="text-xs font-semibold tabular-nums text-fg">
-              {value.toFixed(1)}%
+              {Math.round(value)}%
             </span>
             <div
               role="progressbar"
