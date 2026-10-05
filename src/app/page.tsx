@@ -26,7 +26,7 @@ export default function Home() {
 
         <div className="absolute right-3 top-3 flex origin-top-right scale-90 flex-col gap-3 sm:right-6 sm:top-6 sm:scale-100">
           <WeatherWidget />
-          <div className="flex justify-end gap-3">
+          <div className="flex items-start justify-end gap-3">
             <CryptoWidget />
             <SavingsWidget />
           </div>
