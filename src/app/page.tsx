@@ -2,6 +2,7 @@ import { BackgroundLayer } from "@/components/background/BackgroundLayer";
 import { CardGrid } from "@/components/cards/CardGrid";
 import { Clock } from "@/components/clock/Clock";
 import { Dock } from "@/components/dock/Dock";
+import { SavingsWidget } from "@/components/savings/SavingsWidget";
 import { SearchBar } from "@/components/search/SearchBar";
 import { SettingsButton } from "@/components/settings/SettingsButton";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -22,8 +23,9 @@ export default function Home() {
         </h1>
         <p className="sr-only">{SITE.description}</p>
 
-        <div className="absolute right-3 top-3 origin-top-right scale-90 sm:right-6 sm:top-6 sm:scale-100">
+        <div className="absolute right-3 top-3 flex origin-top-right scale-90 flex-col gap-3 sm:right-6 sm:top-6 sm:scale-100">
           <WeatherWidget />
+          <SavingsWidget />
         </div>
 
         <div className="animate-rise">
