@@ -19,7 +19,7 @@ export function createDefaultState(): AppState {
       url: "",
       idbKey: null,
       color: "#08080a",
-      gradient: { from: "#0b1a0d", to: "#08080a", angle: 160 },
+      gradient: { from: "#191919", to: "#080808", angle: 160 },
       blur: 0,
       dim: 0.35,
     },

@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-0: #08080a;
-  --color-bg-1: #121214;
-  --color-bg-2: #1b1b1f;
-  --color-fg: #f4f4f5;
-  --color-fg-dim: #a1a1aa;
-  --color-fg-faint: #6b6b73;
-  --color-accent: #39ff14;
+  --color-bg-0: #080808;
+  --color-bg-1: #111111;
+  --color-bg-2: #191919;
+  --color-fg: #ededeb;
+  --color-fg-dim: #a1a19d;
+  --color-fg-faint: #858580;
+  --color-accent: #f1f1ef;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
@@ -51,7 +51,7 @@ body {
   }
 
   .glass-strong {
-    background-color: rgba(18, 18, 20, 0.72);
+    background-color: rgb(16 16 16 / 0.72);
     border: 1px solid var(--glass-border);
     box-shadow:
       inset 0 1px 0 0 var(--glass-hi),
@@ -136,12 +136,12 @@ body {
   }
 
   .focus-ring:focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid rgb(255 255 255 / 0.72);
     outline-offset: 2px;
   }
 
   .accent-glow {
-    box-shadow: 0 0 0 1px rgba(57, 255, 20, 0.5), 0 0 24px -4px rgba(57, 255, 20, 0.45);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.35), 0 0 24px -4px rgb(255 255 255 / 0.2);
   }
 }
 
@@ -163,8 +163,8 @@ body {
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: #000;
+  background: rgb(255 255 255 / 0.15);
+  color: var(--color-fg);
 }
 
 ::-webkit-scrollbar {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { DOCK_ITEMS } from "@/lib/dock";
+import { getDockItems } from "@/lib/dock";
 import { normalizeUrl } from "@/lib/favicon";
 import type { DockItem } from "@/lib/types";
 
@@ -48,9 +48,10 @@ function DockTile({ item }: { item: DockItem }) {
   );
 }
 
-/** Apps are configured in src/lib/dock.ts. */
-export function Dock() {
-  if (DOCK_ITEMS.length === 0) return null;
+/** Apps come from GitHub, see src/lib/dock.ts. */
+export async function Dock() {
+  const items = await getDockItems();
+  if (items.length === 0) return null;
 
   return (
     <nav
@@ -62,7 +63,7 @@ export function Dock() {
           lifted icon with its label — pulled back with a negative margin. */}
       <div className="-m-12 max-w-[100vw] overflow-x-auto p-12">
         <ul className="glass mx-auto flex w-max items-end gap-2.5 rounded-3xl px-3 py-2.5 sm:gap-3">
-          {DOCK_ITEMS.map((item) => (
+          {items.map((item) => (
             <DockTile key={item.id} item={item} />
           ))}
         </ul>

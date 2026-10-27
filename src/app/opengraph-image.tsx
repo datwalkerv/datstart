@@ -18,7 +18,7 @@ export default function OpengraphImage() {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: SITE.background,
-          backgroundImage: `radial-gradient(circle at 50% 8%, rgba(57,255,20,0.22), transparent 55%), linear-gradient(160deg, #0b1a0d, ${SITE.background})`,
+          backgroundImage: `radial-gradient(circle at 50% 8%, rgba(255,255,255,0.09), transparent 55%), linear-gradient(160deg, #191919, ${SITE.background})`,
           color: "#f4f4f5",
           fontFamily: "sans-serif",
         }}
@@ -35,7 +35,7 @@ export default function OpengraphImage() {
             color: "#000",
             fontSize: 54,
             fontWeight: 700,
-            boxShadow: "0 30px 80px rgba(57,255,20,0.35)",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.5)",
           }}
         >
           ds

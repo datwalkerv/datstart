@@ -10,8 +10,8 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://datstart.vercel.app",
   author: "datwalkerv",
   repository: "https://github.com/datwalkerv/datstart",
-  accent: "#39FF14",
-  background: "#08080a",
+  accent: "#f1f1ef",
+  background: "#080808",
 } as const;
 
 export const SITE_KEYWORDS = [

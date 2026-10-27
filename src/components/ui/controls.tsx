@@ -4,7 +4,7 @@ export const inputClass =
   "focus-ring w-full rounded-xl border border-white/10 bg-black/25 px-3 py-2 text-sm text-fg placeholder:text-fg-faint";
 
 export const primaryButtonClass =
-  "focus-ring rounded-xl bg-accent px-4 py-2 text-sm font-bold text-black transition hover:brightness-110";
+  "focus-ring rounded-xl bg-accent px-4 py-2 text-sm font-bold text-black transition hover:brightness-90";
 
 export const ghostButtonClass =
   "focus-ring rounded-xl border border-white/10 px-4 py-2 text-sm text-fg-dim transition hover:bg-white/10 hover:text-fg";
