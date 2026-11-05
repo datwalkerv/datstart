@@ -22,6 +22,7 @@ export function createDefaultState(): AppState {
       gradient: { from: "#191919", to: "#080808", angle: 160 },
       blur: 0,
       dim: 0.35,
+      elementBlur: true,
     },
     cards: [
       { id: "card_work", title: "Work", pins: [] },

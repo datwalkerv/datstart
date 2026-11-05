@@ -58,6 +58,10 @@ body {
     backdrop-filter: blur(40px) saturate(1.8);
   }
 
+  :root[data-element-blur="off"] :is(.glass, .glass-strong) {
+    backdrop-filter: none;
+  }
+
   .glass-hover {
     transition:
       background-color 180ms ease,
@@ -99,7 +103,6 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     -webkit-background-clip: text;
     background-clip: text;
-    backdrop-filter: blur(10px) brightness(1.18) saturate(1.35);
     filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
   }
 

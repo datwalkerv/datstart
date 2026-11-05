@@ -221,6 +221,11 @@ export function AppearanceTab() {
         suffix="%"
         onChange={(value) => setBackground({ dim: value / 100 })}
       />
+      <Toggle
+        label="Elements background blur"
+        checked={background.elementBlur !== false}
+        onChange={(elementBlur) => setBackground({ elementBlur })}
+      />
 
       <div className="border-t border-white/10 pt-4">
         <Toggle
