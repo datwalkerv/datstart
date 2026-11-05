@@ -47,7 +47,6 @@ body {
       inset 0 1px 0 0 var(--glass-hi),
       var(--glass-shadow);
     backdrop-filter: blur(28px) saturate(1.6);
-    -webkit-backdrop-filter: blur(28px) saturate(1.6);
   }
 
   .glass-strong {
@@ -57,7 +56,6 @@ body {
       inset 0 1px 0 0 var(--glass-hi),
       var(--glass-shadow);
     backdrop-filter: blur(40px) saturate(1.8);
-    -webkit-backdrop-filter: blur(40px) saturate(1.8);
   }
 
   .glass-hover {
@@ -102,7 +100,6 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     backdrop-filter: blur(10px) brightness(1.18) saturate(1.35);
-    -webkit-backdrop-filter: blur(10px) brightness(1.18) saturate(1.35);
     filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.45));
   }
 
