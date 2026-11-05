@@ -52,8 +52,8 @@ export type BackgroundSettings = {
   blur: number;
   /** Darkening overlay opacity, 0-1. */
   dim: number;
-  /** Backdrop blur on glass elements; missing (older saves) means on. */
-  elementBlur?: boolean;
+  /** Backdrop blur on glass elements, in px; missing in older saves. */
+  elementBlur?: number;
 };
 
 export type Coords = { latitude: number; longitude: number };

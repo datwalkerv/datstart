@@ -67,8 +67,10 @@ export function BackgroundLayer() {
 
   // On <html> because the settings panel and modals are portaled outside <main>.
   useEffect(() => {
-    document.documentElement.dataset.elementBlur =
-      background.elementBlur === false ? "off" : "on";
+    document.documentElement.style.setProperty(
+      "--element-blur",
+      `${background.elementBlur ?? 28}px`,
+    );
   }, [background.elementBlur]);
 
   if (!hydrated) return null;

@@ -221,9 +221,13 @@ export function AppearanceTab() {
         suffix="%"
         onChange={(value) => setBackground({ dim: value / 100 })}
       />
-      <Toggle
+      <Slider
         label="Elements background blur"
-        checked={background.elementBlur !== false}
+        value={background.elementBlur ?? 28}
+        min={0}
+        max={40}
+        step={1}
+        suffix="px"
         onChange={(elementBlur) => setBackground({ elementBlur })}
       />
 
